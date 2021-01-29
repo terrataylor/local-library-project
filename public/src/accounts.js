@@ -22,7 +22,21 @@ function numberOfBorrows(account, books) {
 }
 
 function getBooksPossessedByAccount(account, books, authors) {
-  return books
+  let books1=[];
+  books1 =  books
+  .filter((book) => {
+    const recent = book.borrows[0];
+    console.log(recent.returned, account.id, recent.id);
+    return recent.returned==false && account.id === recent.id;
+  });
+
+  let result = books1.map((book)=>{
+    const author = authors.find((author) => author.id === book.authorId);
+      return { ...book, author };
+  });
+  console.log(result);
+  return result;
+  /*return books
     .filter((book) => {
       const recent = book.borrows[0];
       return !recent.returned && recent.id === account.id;
@@ -30,7 +44,7 @@ function getBooksPossessedByAccount(account, books, authors) {
     .map((book) => {
       const author = authors.find((author) => author.id === book.authorId);
       return { ...book, author };
-    });
+    });*/
 }
 
 module.exports = {

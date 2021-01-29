@@ -62,27 +62,29 @@ function getMostPopularAuthors(books, authors) {
     if (acc[authorId]) {
       acc[authorId].push(borrows.length);
     } else {
-      acc[authorId] = [borrows.length];
+      acc[authorId] = [borrows.length];   
     }
-
     return acc;
-  }, {});
+  },{});
+ // console.log(count);
 
-  for (let id in count) {
-    const sum = count[id].reduce((a, b) => a + b);
+  for(let id in count){
+    const sum = count[id].reduce((a,b)=>a+b);
     count[id] = sum;
   }
+  //console.log("reduced",count);
 
   const sorted = _sortObjectByValues(count);
-  return sorted
-    .map((authorId) => {
-      const {
-        name: { first, last },
-      } = authors.find(({ id }) => id === Number(authorId));
-      const name = `${first} ${last}`;
-      return { name, count: count[authorId] };
-    })
-    .slice(0, 5);
+  //console.log("sorted",sorted);
+
+  return sorted.map((authorId)=>{
+    console.log(authors.find(({id})=>{ 
+      return id === authorId;
+    }));
+    const {name:{first, last}} = authors.find(({id})=> id === Number(authorId));   
+    const name = `${first} ${last}`;
+    return {name, count:count[authorId]};
+  }).slice(0,5);
 }
 
 module.exports = {
